@@ -1,15 +1,26 @@
 import React from 'react'
+import { useAuthContext } from '../../context/AuthContext'
+import useConversation from '../../zustand/useConversation'
+import { extractTime } from '../../utils/extractTime'
 
-const Message = () => {
+const Message = ({ message }) => {
+  const {authUser} =useAuthContext()
+  const {selectedConversation} =useConversation ()
+  const fromME=message.senderId===authUser?._id;//check  if the current user is the sender of this message
+  const formatedTime=extractTime(message.createdAt)
+  const chatClassName=fromME?'chat-end':'chat-start'; //add class to style depending on who sent the message
+  const profilePicture =fromME? authUser?.profilePicture : selectedConversation?.profilePicture
+  const BubbleBgColor = fromME ? 'bg-blue-500' : ''
+  const shakeClass = message.shouldShake ? "shake" : ""
   return (
-    <div className='chat chat-end'>
+    <div className={`chat ${chatClassName}`}>
         <div className="chat-image avatar">
             <div className="w-10 rounded-full">
-            <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="Tailwind CSS chat bubble component" />
+            <img src={profilePicture} />
             </div>
         </div>
-        <div className={`chat-bubble text-white bg-blue-500 pb-2`}>Hi! what is up</div>
-			<div className='chat-footer opacity-50 text-xs flex gap-1 items-center'>12:45</div>
+        <div className={`chat-bubble text-white ${BubbleBgColor} ${shakeClass} pb-2`}>{message.message}</div>
+			<div className='chat-footer opacity-50 text-xs flex gap-1 items-center'>{formatedTime}</div>
     </div>
   )
 }
