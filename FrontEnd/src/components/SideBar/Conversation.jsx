@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useConversation from '../../zustand/useConversation';
 import { useSocketContext } from '../../context/SocketContext';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import MessageContainer from '../messages/MessageContainer';
+import {useNavigate } from "react-router-dom";
+
 
 const Conversation = ({ conversation,lastIdx,emoji }) => {
 
@@ -8,11 +12,26 @@ const Conversation = ({ conversation,lastIdx,emoji }) => {
 	const isSelected = selectedConversation?._id === conversation._id;
 	const {onlineUsers}=useSocketContext(); 
 	const isOnline = onlineUsers.includes(conversation._id);
+	const isMobile= useIsMobile();
+	
+	const navigate  = useNavigate();
+	
+	const handleClick = () => {
+		// Navigate to the desired component
+		navigate("../messages/MessageContainer");
+	  };
+	  
 	return (
 		<>
 			<div className={`flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer
 			${isSelected ?"bg-sky-500":""}
-			`}  onClick={()=> setSelectedConversation(conversation)}>
+			`}  onClick={()=>{
+				 setSelectedConversation(conversation)
+				 
+				 if(isMobile){
+					handleClick()
+				 }
+				 }}>
 			
 				<div className={`avatar ${isOnline ?"online":""} `}>
 					<div className='w-12 rounded-full'>

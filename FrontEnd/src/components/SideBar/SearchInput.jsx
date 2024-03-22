@@ -11,6 +11,7 @@ const SearchInput = () => {
   const handelSubmit=(e)=>{
     e.preventDefault();
     if(!search){
+      setSelectedConversation(null)
       return toast.error('search is empty')
     };
     console.log(search)
@@ -22,6 +23,7 @@ const SearchInput = () => {
       setSelectedConversation(conversation)
       setSearch('');
     }else toast.error(`user not found`);
+    
   }
 
   return (
