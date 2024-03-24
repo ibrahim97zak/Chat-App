@@ -12,16 +12,19 @@ const MessageContainer = () => {
     const {isMobile,setIsMobile} = useIsMobile()
     const navigate = useNavigate()
     const handelClikeNav=()=>{
-      navigate("/")
+       console.log("Clicked navigation button");
+        navigate("/");
+        console.log("Before clearing:", selectedConversation);
+        setSelectedConversation(null);
+        console.log("After clearing:", selectedConversation);
+
     }
 
 useEffect(()=>{
-  console.log(selectedConversation)
-  if(!isMobile){
-    // return()=> setSelectedConversation(null)//clear function(clean up) when component unmounts.
-  }
   
-},[setSelectedConversation,isMobile])
+
+  
+},[setSelectedConversation,setIsMobile])
 
   return (
     <div className='md:min-w-[450px] small-screen  flex flex-col'>
