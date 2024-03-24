@@ -26,12 +26,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", usersRoutes);
 
-const staticPath = path.join(__dirname, '../FrontEnd/dist');
+const staticPath = path.join(__dirname, '/FrontEnd/dist');
 app.use(express.static(staticPath));
 
 //render front/client at any path
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname,'../FrontEnd/dist/index.html'))
+    res.sendFile(path.join(__dirname,'/FrontEnd/dist/index.html'))
 })
 
 server.listen(PORT, () => {
