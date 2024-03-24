@@ -3,11 +3,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
-import authRoutes from "./routes/auth/auth.rouets.js"
-import messageRoutes from "./routes/message/message.rouets.js"
-import usersRoutes from "./routes/users/user.routes.js"
-import connectToDB from "./DB/connectDb.js";
-import { app, server } from "./socket/socket.js";
+import authRoutes from "./BackEnd/routes/auth/auth.rouets.js"
+import messageRoutes from "./BackEnd/routes/message/message.rouets.js"
+import usersRoutes from "./BackEnd/routes/users/user.routes.js"
+import connectToDB from "./BackEnd/DB/connectDB.js";
+import { app, server } from "./BackEnd/socket/socket.js";
 import { fileURLToPath } from "url";
 
 const PORT = process.env.PORT || 5000;
