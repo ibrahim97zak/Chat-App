@@ -1,43 +1,30 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
-import './App.css'
-import Login from './pages/login/Login'
-import SignUp from './pages/signup/Signup'
-import Home from './pages/home/Home'
-import {Toaster} from 'react-hot-toast'
-import { useAuthContext } from './context/AuthContext'
-import { useIsMobile } from './hooks/useIsMobile'
-import MessageContainer from './components/messages/MessageContainer'
-import useConversation from './zustand/useConversation'
-import { useEffect } from 'react'
+import React, { Suspense, lazy } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import "./App.css";
+import { Toaster } from "react-hot-toast";
+import { useAuthContext } from "./context/AuthContext";
 
-
-
-
+const Home = lazy(() => import("./pages/home/Home"));
+const Login = lazy(() => import("./pages/login/Login"));
+const SignUp = lazy(() => import("./pages/signup/Signup"));
+const MessageContainer = lazy(() => import("./components/messages/MessageContainer"));
 
 function App() {
-const {authUser}=useAuthContext();
-const isMobileView = useIsMobile();
-const {selectedConversation,setSelectedConversation} = useConversation()
-// const isMobile =()=>{
-//   if(isMobileView && authUser &&selectedConversation){
-//     console.log("IS WORK",selectedConversation)
-//     return true;
-//   }
-  
-// }
+  const { authUser } = useAuthContext();
 
   return (
     <div className="p-4 h-screen flex items-center justify-center">
-      
-     <Routes>
-      <Route path='/' element={authUser ? <Home /> : <Navigate to={"/login"} /> }/> 
-      <Route path="/login" element={authUser ? <Navigate to= '/' /> : <Login />} />
-      <Route path="/signup" element={authUser ? <Navigate to= '/' /> : <SignUp />} />
-      <Route path='/messages/MessageContainer' element= {<MessageContainer />} /> 
-     </Routes>
-     <Toaster/>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={authUser ? <Home /> : <Navigate to={"/login"} />} />
+          <Route path="/login" element={authUser ? <Navigate to="/" /> : <Login />} />
+          <Route path="/signup" element={authUser ? <Navigate to="/" /> : <SignUp />} />
+          <Route path="/messages/MessageContainer" element={<MessageContainer />} />
+        </Routes>
+      </Suspense>
+      <Toaster />
     </div>
-  )
-}  
- 
-export default App
+  );
+}
+
+export default App;
