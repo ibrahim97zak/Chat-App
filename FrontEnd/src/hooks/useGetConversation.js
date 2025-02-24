@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const useGetConversation = () => {
- const [loading,setLoading]=useState(false);
- const  [conversations, setConversations] = useState([]);
+const useGetConversation = (page, limit = 5) => {
+    const [loading, setLoading] = useState(false);
+    const [conversations, setConversations] = useState([]);
 
-useEffect(()=>{
-    //get conversation when the component mounts
-    const  getConv= async()=>{
-        setLoading(true)
-        try {
-            const result = await fetch("/api/users");
-            const data = await result.json();
-            if(data.error){throw new Error(data.error)}
-            setConversations(data);
-        } catch (error) {
-            toast.error(error.message);
-        }finally{
-          setLoading(false)
-        
-        }
-    }
-    getConv();
-} , []);
-return { loading, conversations};
-}
+    useEffect(() => {
+        const getConversations = async () => {
+            setLoading(true);
+            try {
+                const result = await fetch(`/api/users?page=${page}&limit=${limit}`);
+                const data = await result.json();
+                if (data.error) throw new Error(data.error);
 
-export default useGetConversation
+                setConversations(data); // Only show the latest fetched conversations
+            } catch (error) {
+                toast.error(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getConversations();
+    }, [page]); // Fetch new users when the page changes
+
+    return { loading, conversations };
+};
+
+export default useGetConversation;
